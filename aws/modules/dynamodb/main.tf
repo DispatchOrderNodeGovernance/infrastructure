@@ -54,59 +54,100 @@ resource "aws_dynamodb_table" "contract_templates" {
         name = "id"
         type = "N"
     }
-   /*  attribute {
+/*      attribute {
         name = "ride_matching_service_endpoints"
         type = "S"
-    }
-    attribute {
+    } */
+/*     attribute {
         name = "ride_matching_service_timeout"
         type = "N"
+    } */
+    local_secondary_index {
+        name = "ride_matching_service_contract_value_index"
+        range_key = "ride_matching_service_contract_value"
+        projection_type = "ALL"
     }
     attribute {
         name = "ride_matching_service_contract_value"
         type = "N"
     }
-    attribute {
+/*     attribute {
         name = "location_service_endpoints"
         type = "S"
-    }
-    attribute {
+    } */
+/*     attribute {
         name = "location_service_timeout"
         type = "N"
+    } */
+    local_secondary_index {
+        name = "ride_matching_service_contract_value_index"
+        range_key = "ride_matching_service_contract_value"
+        projection_type = "ALL"
     }
     attribute {
         name = "location_service_contract_value"
         type = "N"
     }
-    attribute {
+    local_secondary_index {
+        name = "location_service_contract_value_index"
+        range_key = "location_service_contract_value"
+        projection_type = "ALL"
+    }
+/*     attribute {
         name = "notification_service_endpoints"
         type = "S"
-    }
-    attribute {
+    } */
+/*     attribute {
         name = "notification_service_timeout"
         type = "N"
+    } */
+    local_secondary_index {
+        name = "ride_matching_service_contract_value_index"
+        range_key = "ride_matching_service_contract_value"
+        projection_type = "ALL"
     }
     attribute {
         name = "notification_service_contract_value"
         type = "N"
     }
-    attribute {
+    local_secondary_index {
+        name = "notification_service_contract_value_index"
+        range_key = "notification_service_contract_value"
+        projection_type = "ALL"
+    }
+/*     attribute {
         name = "trip_management_service_endpoints"
         type = "S"
-    }
-    attribute {
+    } */
+/*     attribute {
         name = "trip_management_service_timeout"
         type = "N"
+    } */
+    local_secondary_index {
+        name = "ride_matching_service_contract_value_index"
+        range_key = "ride_matching_service_contract_value"
+        projection_type = "ALL"
     }
     attribute {
         name = "trip_management_service_contract_value"
         type = "N"
     }
+    local_secondary_index {
+        name = "trip_management_service_contract_value_index"
+        range_key = "trip_management_service_contract_value"
+        projection_type = "ALL"
+    }
 
     attribute {
         name = "total_contract_value"
         type = "N"
-    } */
+    }
+    local_secondary_index {
+        name = "beneficiary_id_index"
+        range_key = "total_contract_value"
+        projection_type = "ALL"
+    }
+    
     attribute {
         name = "beneficiary_id"
         type = "N"

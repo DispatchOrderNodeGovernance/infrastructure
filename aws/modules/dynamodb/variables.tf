@@ -4,9 +4,9 @@ variable "contract_templates_table_name" {
 }
 variable "read_capacity" {
     type = number
-    default = 5
+    default = 1
 }
 variable "write_capacity" {
     type = number
-    default = 5
+    default = 1
 }
