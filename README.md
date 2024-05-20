@@ -1,3 +1,4 @@
+[![infracost](https://img.shields.io/endpoint?url=https://dashboard.api.infracost.io/shields/json/fcfa65ca-c950-4f14-a642-5e9e898344e4/repos/a5d4e133-9ea6-4cc9-9d67-922170bf3c64/branch/3ad5cd1a-084c-4c22-ac46-1efd9918f5c0)](https://dashboard.infracost.io/org/qtvhao/repos/a5d4e133-9ea6-4cc9-9d67-922170bf3c64?tab=settings)
 # infrastructure
 
 Kiến trúc microservice là một phương pháp thiết kế phần mềm trong đó ứng dụng được cấu trúc dưới dạng một tập hợp các dịch vụ nhỏ, độc lập. Mỗi dịch vụ này thực hiện một chức năng kinh doanh cụ thể và có thể được phát triển, triển khai, vận hành và mở rộng một cách độc lập. Đối với một ứng dụng tương tự Grab, chúng ta cần xem xét các dịch vụ chính sau đây:
