@@ -1,0 +1,2 @@
+aws/environments/production/terraform.tfstate
+aws/environments/production/.terraform/

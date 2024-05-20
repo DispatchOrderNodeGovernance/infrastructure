@@ -16,6 +16,10 @@ aws/
 │       ├── outputs.tf
 │       └── terraform.tfvars
 ├── modules/
+|   ├── dynamodb/
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
 │   ├── vpc/
 │   │   ├── main.tf
 │   │   ├── variables.tf
@@ -29,3 +33,9 @@ aws/
 │       ├── variables.tf
 │       └── outputs.tf
 └── README.md
+
+To apply the Terraform configuration for the production environment, you would run the following commands:
+- cd aws/environments/production
+- terraform init
+- terraform plan
+- terraform apply
