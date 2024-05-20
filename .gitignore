@@ -1,2 +1,3 @@
 aws/environments/production/terraform.tfstate
 aws/environments/production/.terraform/
+aws/environments/production/terraform.tfstate.backup
