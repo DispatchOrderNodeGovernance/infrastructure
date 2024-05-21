@@ -6,7 +6,8 @@ resource "aws_dynamodb_table_item" "default_stack" {
   item = <<ITEM
 {
   "id": {"N": "2"},
-  "beneficiary_id": {"N": "2"}
+  "beneficiary_id": {"N": "2"},
+  "total_contract_value": {"N": "0"}
 }
 ITEM
 }

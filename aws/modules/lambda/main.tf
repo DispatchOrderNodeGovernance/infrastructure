@@ -11,7 +11,7 @@ variable "dynamodb_table_contract_templates_name" {
 # https://raw.githubusercontent.com/DispatchOrderNodeGovernance/complex/main/src/get_contract_templates.py
 
 data "http" "get_contract_templates" {
-  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/complex/main/src/get_contract_templates.py"
+  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/complex/v1.0/src/get_contract_templates.py"
 }
 data "archive_file" "contract_templates" {
   type        = "zip"
