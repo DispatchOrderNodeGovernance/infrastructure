@@ -11,11 +11,12 @@ variable "dynamodb_table_contract_templates_name" {
 # https://raw.githubusercontent.com/DispatchOrderNodeGovernance/complex/main/src/get_contract_templates.py
 
 data "http" "get_contract_templates" {
-  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/complex/v1.0/src/get_contract_templates.py"
+  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/complex/v1.0.1/src/get_contract_templates.py"
 }
 data "archive_file" "contract_templates" {
   type        = "zip"
   output_path = "${path.module}/get_contract_templates.zip"
+
   source {
     content  = data.http.get_contract_templates.response_body
     filename = "get_contract_templates.py"
@@ -24,6 +25,8 @@ data "archive_file" "contract_templates" {
 resource "aws_lambda_function" "get_contract_templates" {
   function_name = "get_contract_templates_${var.environment}"
   filename      = data.archive_file.contract_templates.output_path
+  # use hash of the file to trigger an update
+  source_code_hash = data.archive_file.contract_templates.output_base64sha256
 
   handler = "get_contract_templates.lambda_handler"
   runtime = "python3.8"
