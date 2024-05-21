@@ -10,3 +10,10 @@ module "dynamodb" {
   source                        = "../../modules/dynamodb"
   contract_templates_table_name = "contract_templates_${terraform.workspace}"
 }
+
+module "lambda" {
+  source      = "../../modules/lambda"
+  environment = terraform.workspace
+  dynamodb_table_contract_templates_arn = module.dynamodb.contract_templates_table_arn
+  dynamodb_table_contract_templates_name = module.dynamodb.contract_templates_table_name
+}
