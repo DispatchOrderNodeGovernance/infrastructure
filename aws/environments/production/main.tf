@@ -8,7 +8,7 @@ terraform {
 }
 module "dynamodb" {
   source                        = "../../modules/dynamodb"
-  contract_templates_table_name = "contract_templates_${terraform.workspace}"
+  contract_templates_table_name = "contract_templates_${var.environment}"
 }
 
 module "lambda" {
