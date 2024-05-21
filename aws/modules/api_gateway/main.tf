@@ -39,11 +39,4 @@ resource "aws_lambda_permission" "api_gateway" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = aws_apigatewayv2_api.api_gateway.execution_arn
 }
-data "http" "api_gateway" {
-  url = "${aws_apigatewayv2_api.api_gateway.api_endpoint}/production_stage/stacks"
-}
-
-output "api_gateway_url" {
-  value = data.http.api_gateway.response_body
-}
 

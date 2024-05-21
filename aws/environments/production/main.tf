@@ -28,3 +28,25 @@ module "api_gateway" {
   lambda_get_contract_templates_arn = module.lambda.get_contract_templates_lambda_arn
   api_gateway_name                  = "api_gateway_${var.environment}"
 }
+
+data "http" "api_gateway" {
+  url = "${module.api_gateway.api_gateway_endpoint}/stacks"
+}
+resource "local_file" "api_gateway" {
+  content  = data.http.api_gateway.response_body
+  filename = "api_gateway.json"
+}
+/*
+{
+  "rider_id": "rider123",
+  "pickup_location": {
+    "latitude": 37.7749,
+    "longitude": -122.4194
+  },
+  "destination_location": {
+    "latitude": 37.7849,
+    "longitude": -122.4094
+  },
+  "stack_id": "stack123"
+}
+*/
