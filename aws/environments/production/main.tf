@@ -12,8 +12,13 @@ module "dynamodb" {
 }
 
 module "lambda" {
-  source      = "../../modules/lambda"
-  environment = terraform.workspace
-  dynamodb_table_contract_templates_arn = module.dynamodb.contract_templates_table_arn
+  source                                 = "../../modules/lambda"
+  environment                            = terraform.workspace
+  dynamodb_table_contract_templates_arn  = module.dynamodb.contract_templates_table_arn
   dynamodb_table_contract_templates_name = module.dynamodb.contract_templates_table_name
+}
+
+module "default_stack" {
+  source     = "../../modules/default_stack"
+  contract_templates_table_name = module.dynamodb.contract_templates_table_name
 }
