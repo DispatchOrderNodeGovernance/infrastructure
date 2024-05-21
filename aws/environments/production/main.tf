@@ -26,4 +26,5 @@ module "default_stack" {
 module "api_gateway" {
   source                            = "../../modules/api_gateway"
   lambda_get_contract_templates_arn = module.lambda.get_contract_templates_lambda_arn
+  api_gateway_name                  = "api_gateway_${var.environment}"
 }
