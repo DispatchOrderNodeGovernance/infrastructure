@@ -5,12 +5,14 @@ resource "aws_apigatewayv2_api" "api_gateway" {
   target        = var.lambda_get_contract_templates_arn
 }
 
-resource "aws_apigatewayv2_route" "api_gateway" {
+#update_location_lambda_arn 
+
+resource "aws_apigatewayv2_route" "api_gateway_get_stacks" {
   api_id    = aws_apigatewayv2_api.api_gateway.id
   route_key = "GET /stacks"
-  target    = "integrations/${aws_apigatewayv2_integration.api_gateway.id}"
+  target    = "integrations/${aws_apigatewayv2_integration.api_gateway_get_stacks.id}"
 }
-resource "aws_apigatewayv2_integration" "api_gateway" {
+resource "aws_apigatewayv2_integration" "api_gateway_get_stacks" {
   api_id                 = aws_apigatewayv2_api.api_gateway.id
   integration_type       = "AWS_PROXY"
   integration_method     = "GET"

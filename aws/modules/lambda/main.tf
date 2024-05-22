@@ -12,7 +12,7 @@ variable "dynamodb_table_contract_templates_name" {
 
 # https://raw.githubusercontent.com/DispatchOrderNodeGovernance/location-service/v0.1.0/src/update_location.py
 data "http" "update_location" {
-  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/location-service/v0.1.0/src/update_location.py"
+  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/location-service/v0.1.1/src/update_location.py"
 }
 data "archive_file" "update_location" {
   type        = "zip"
@@ -24,10 +24,9 @@ data "archive_file" "update_location" {
   }
 }
 resource "aws_lambda_function" "update_location" {
-  architectures = ["arm64"]
-  function_name = "update_location_${var.environment}"
-  filename      = data.archive_file.update_location.output_path
-  # use hash of the file to trigger an update
+  architectures    = ["arm64"]
+  function_name    = "update_location_${var.environment}"
+  filename         = data.archive_file.update_location.output_path
   source_code_hash = data.archive_file.update_location.output_base64sha256
 
   handler = "update_location.lambda_handler"
@@ -35,6 +34,29 @@ resource "aws_lambda_function" "update_location" {
 
   role = aws_iam_role.lambda_exec.arn
 }
+resource "random_id" "driver_id" {
+  // always generate a new id
+  keepers = {
+    always_run = timestamp()
+  }
+  byte_length = 8
+}
+resource "aws_lambda_invocation" "update_location" {
+  function_name = aws_lambda_function.update_location.function_name
+  depends_on    = [aws_lambda_function.update_location]
+
+  input = jsonencode({
+    "longitude" : 105.84401565986708,
+    "latitude" : 21.001407164932232,
+    "driver_id" : "value_${random_id.driver_id.hex}",
+    "status" : "in_trip"
+  })
+}
+resource "local_file" "update_location" {
+  content  = aws_lambda_invocation.update_location.result
+  filename = "update_location_result.json"
+}
+
 data "http" "get_contract_templates" {
   url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/complex/v1.0.1/src/get_contract_templates.py"
 }
