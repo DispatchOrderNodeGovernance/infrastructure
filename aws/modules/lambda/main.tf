@@ -12,7 +12,7 @@ variable "dynamodb_table_contract_templates_name" {
 
 # https://raw.githubusercontent.com/DispatchOrderNodeGovernance/location-service/v0.1.0/src/update_location.py
 data "http" "update_location" {
-  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/location-service/v0.1.1/src/update_location.py"
+  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/location-service/v0.1.2/src/update_location.py"
 }
 data "archive_file" "update_location" {
   type        = "zip"
@@ -41,7 +41,7 @@ resource "random_id" "driver_id" {
   }
   byte_length = 8
 }
-resource "aws_lambda_invocation" "update_location" {
+/* resource "aws_lambda_invocation" "update_location" {
   function_name = aws_lambda_function.update_location.function_name
   depends_on    = [aws_lambda_function.update_location]
 
@@ -51,12 +51,12 @@ resource "aws_lambda_invocation" "update_location" {
     "driver_id" : "value_${random_id.driver_id.hex}",
     "status" : "in_trip"
   })
-}
-resource "local_file" "update_location" {
+} */
+/* resource "local_file" "update_location" {
   content  = aws_lambda_invocation.update_location.result
   filename = "update_location_result.json"
 }
-
+ */
 data "http" "get_contract_templates" {
   url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/complex/v1.0.1/src/get_contract_templates.py"
 }

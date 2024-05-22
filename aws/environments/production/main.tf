@@ -34,7 +34,7 @@ data "http" "api_gateway_get_stacks" {
   url = "${module.api_gateway.api_gateway_endpoint}/stacks"
 }
 data "http" "api_gateway_update_location" {
-  url = "${module.api_gateway.api_gateway_endpoint}/locations"
+  url    = "${module.api_gateway.api_gateway_endpoint}/locations"
   method = "POST"
   request_body = jsonencode({
     "longitude" : 105.84401565986708,
@@ -42,10 +42,17 @@ data "http" "api_gateway_update_location" {
     "driver_id" : "value_${timestamp()}",
     "status" : "in_trip"
   })
+  request_headers = {
+    "Content-Type" = "application/json"
+  }
 }
 resource "local_file" "api_gateway_get_stacks" {
   content  = data.http.api_gateway_get_stacks.response_body
   filename = "stacks.json"
+}
+resource "local_file" "api_gateway_update_location" {
+  content  = data.http.api_gateway_update_location.response_body
+  filename = "update_location.json"
 }
 /*
 {
