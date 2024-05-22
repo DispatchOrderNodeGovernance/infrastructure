@@ -2,11 +2,22 @@
 resource "aws_apigatewayv2_api" "api_gateway" {
   name          = var.api_gateway_name
   protocol_type = "HTTP"
-  target        = var.lambda_get_contract_templates_arn
 }
 
 #update_location_lambda_arn 
 
+resource "aws_apigatewayv2_route" "api_gateway_update_location" {
+  api_id    = aws_apigatewayv2_api.api_gateway.id
+  route_key = "POST /locations"
+  target    = "integrations/${aws_apigatewayv2_integration.api_gateway_update_location.id}"
+}
+resource "aws_apigatewayv2_integration" "api_gateway_update_location" {
+  api_id                 = aws_apigatewayv2_api.api_gateway.id
+  integration_type       = "AWS_PROXY"
+  integration_method     = "POST"
+  integration_uri        = var.update_location_lambda_arn
+  payload_format_version = "2.0"
+}
 resource "aws_apigatewayv2_route" "api_gateway_get_stacks" {
   api_id    = aws_apigatewayv2_api.api_gateway.id
   route_key = "GET /stacks"
@@ -34,11 +45,18 @@ resource "aws_apigatewayv2_stage" "api_gateway" {
 The resource policy of the Lambda function determines if API Gateway can invoke it. You can run the AWS CLI command snippet below to give API Gateway permission to invoke your AWS Lambda function.
  */
 
-resource "aws_lambda_permission" "api_gateway" {
-  statement_id  = "AllowExecutionFromAPIGateway"
+resource "aws_lambda_permission" "api_gateway_get_stacks" {
+  statement_id  = "AllowExecutionGetStacks"
   action        = "lambda:InvokeFunction"
   function_name = var.lambda_get_contract_templates_arn
   principal     = "apigateway.amazonaws.com"
   source_arn    = aws_apigatewayv2_api.api_gateway.execution_arn
 }
 
+resource "aws_lambda_permission" "api_gateway_update_location" {
+  statement_id  = "AllowExecutionUpdateLocation"
+  action        = "lambda:InvokeFunction"
+  function_name = var.update_location_lambda_arn
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = aws_apigatewayv2_api.api_gateway.execution_arn
+}

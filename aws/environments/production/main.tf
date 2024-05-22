@@ -30,12 +30,22 @@ module "api_gateway" {
   api_gateway_name                  = "api_gateway_${var.environment}"
 }
 
-data "http" "api_gateway" {
+data "http" "api_gateway_get_stacks" {
   url = "${module.api_gateway.api_gateway_endpoint}/stacks"
 }
-resource "local_file" "api_gateway" {
-  content  = data.http.api_gateway.response_body
-  filename = "api_gateway.json"
+data "http" "api_gateway_update_location" {
+  url = "${module.api_gateway.api_gateway_endpoint}/locations"
+  method = "POST"
+  request_body = jsonencode({
+    "longitude" : 105.84401565986708,
+    "latitude" : 21.001407164932232,
+    "driver_id" : "value_${timestamp()}",
+    "status" : "in_trip"
+  })
+}
+resource "local_file" "api_gateway_get_stacks" {
+  content  = data.http.api_gateway_get_stacks.response_body
+  filename = "stacks.json"
 }
 /*
 {
