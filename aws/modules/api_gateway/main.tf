@@ -16,6 +16,7 @@ resource "aws_apigatewayv2_integration" "api_gateway_update_location" {
   integration_type   = "AWS_PROXY"
   integration_method = "POST"
   integration_uri    = var.update_location_lambda_arn
+  payload_format_version = "2.0"
 }
 resource "aws_apigatewayv2_route" "api_gateway_get_stacks" {
   api_id    = aws_apigatewayv2_api.api_gateway.id
