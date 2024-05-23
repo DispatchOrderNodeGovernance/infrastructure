@@ -32,6 +32,7 @@ module "api_gateway" {
 }
 
 data "http" "api_gateway_get_stacks" {
+  depends_on = [ module.api_gateway, module.lambda, module.dynamodb ]
   url = "${module.api_gateway.api_gateway_endpoint}/stacks"
 }
 data "http" "api_gateway_update_location" {

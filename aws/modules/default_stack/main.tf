@@ -1,7 +1,6 @@
 resource "aws_dynamodb_table_item" "default_stack" {
   table_name = var.contract_templates_table_name
   hash_key   = "id"
-  range_key  = "beneficiary_id"
 
   item = <<ITEM
 {
@@ -11,3 +10,11 @@ resource "aws_dynamodb_table_item" "default_stack" {
 }
 ITEM
 }
+
+/*
+dynamodb = boto3.resource('dynamodb')
+table_name = os.environ['CONTRACT_TEMPLATES_TABLE_NAME']
+table = dynamodb.Table(table_name)
+table.get_item(Key={'id': 2})
+*/
+

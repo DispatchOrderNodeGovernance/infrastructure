@@ -43,13 +43,13 @@ Enough to handle up to 200M requests per month. */
 
 resource "aws_dynamodb_table" "contract_templates" {
     name           = var.contract_templates_table_name
-    billing_mode   = "PROVISIONED"
-    read_capacity  = var.read_capacity
-    write_capacity = var.write_capacity
+    billing_mode   = "PAY_PER_REQUEST"
+//    read_capacity  = var.read_capacity
+//    write_capacity = var.write_capacity
     hash_key       = "id"
     # range_key is optional, this used for purpose of sorting
     # partition_key is used for partitioning the data
-    range_key      = "beneficiary_id"
+    # range_key      = "beneficiary_id"
     attribute {
         name = "id"
         type = "N"
@@ -103,9 +103,9 @@ resource "aws_dynamodb_table" "contract_templates" {
         name = "trip_management_service_contract_value"
         type = "N"
     } */
-    local_secondary_index {
+    global_secondary_index {
         name = "total_contract_value_index"
-        range_key = "total_contract_value"
+        hash_key = "total_contract_value"
         projection_type = "ALL"
     }
 
@@ -113,9 +113,9 @@ resource "aws_dynamodb_table" "contract_templates" {
         name = "total_contract_value"
         type = "N"
     }
-    local_secondary_index {
+    global_secondary_index {
         name = "beneficiary_id_index"
-        range_key = "beneficiary_id"
+        hash_key = "beneficiary_id"
         projection_type = "ALL"
     }
     

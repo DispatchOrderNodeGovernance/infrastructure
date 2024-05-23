@@ -8,14 +8,8 @@ variable "dynamodb_table_contract_templates_name" {
 
 }
 
-# https://raw.githubusercontent.com/DispatchOrderNodeGovernance/complex/main/src/get_contract_templates.py
-
-# https://raw.githubusercontent.com/DispatchOrderNodeGovernance/location-service/v0.1.0/src/update_location.py
-
-# https://raw.githubusercontent.com/DispatchOrderNodeGovernance/star-service/v0.1.0/src/dispatch.py
-
 data "http" "dispatch" {
-  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/star-service/v0.1.1/src/dispatch.py"
+  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/star-service/v0.1.2/src/dispatch.py"
 }
 data "archive_file" "dispatch" {
   type        = "zip"
@@ -145,6 +139,7 @@ resource "aws_iam_policy" "lambda_exec" {
         Effect = "Allow"
         Action = [
           "dynamodb:Scan",
+          "dynamodb:GetItem",
         ]
         Resource = var.dynamodb_table_contract_templates_arn
       },
