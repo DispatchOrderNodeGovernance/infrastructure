@@ -113,14 +113,4 @@ resource "aws_dynamodb_table" "contract_templates" {
         name = "total_contract_value"
         type = "N"
     }
-    global_secondary_index {
-        name = "beneficiary_id_index"
-        hash_key = "beneficiary_id"
-        projection_type = "ALL"
-    }
-    
-    attribute {
-        name = "beneficiary_id"
-        type = "N"
-    }
 }

@@ -8,5 +8,5 @@ variable "read_capacity" {
 }
 variable "write_capacity" {
     type = number
-    default = 1
+    default = 2
 }

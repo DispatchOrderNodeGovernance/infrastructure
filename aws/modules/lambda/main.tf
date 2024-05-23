@@ -9,7 +9,7 @@ variable "dynamodb_table_contract_templates_name" {
 }
 
 data "http" "dispatch" {
-  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/star-service/v0.1.4/src/dispatch.py"
+  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/star-service/v0.1.6/src/dispatch.py"
 }
 data "archive_file" "dispatch" {
   type        = "zip"
@@ -19,6 +19,21 @@ data "archive_file" "dispatch" {
     content  = data.http.dispatch.response_body
     filename = "dispatch.py"
   }
+}
+resource "aws_lambda_invocation" "dispatch" {
+  function_name = aws_lambda_function.dispatch.function_name
+  depends_on    = [aws_lambda_function.dispatch]
+
+  input = jsonencode({
+    body: jsonencode({
+      action: "dispatch",
+      stack_id: 2,
+    })
+  })
+}
+resource "local_file" "dispatch" {
+  content  = "${aws_lambda_invocation.dispatch.result}  ${aws_lambda_invocation.dispatch.input}"
+  filename = "dispatch_result.json"
 }
 resource "aws_lambda_function" "dispatch" {
   architectures    = ["arm64"]
@@ -40,7 +55,7 @@ resource "aws_lambda_function" "dispatch" {
 }
 
 data "http" "update_location" {
-  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/location-service/v0.1.3/src/update_location.py"
+  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/location-service/v0.1.4/src/update_location.py"
 }
 data "archive_file" "update_location" {
   type        = "zip"
@@ -144,6 +159,7 @@ resource "aws_iam_policy" "lambda_exec" {
       {
         Effect = "Allow"
         Action = [
+          "dynamodb:Query",
           "dynamodb:Scan",
           "dynamodb:GetItem",
         ]
