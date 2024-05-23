@@ -19,8 +19,12 @@ module "lambda" {
 }
 
 module "default_stack" {
-  source                        = "../../modules/default_stack"
-  contract_templates_table_name = module.dynamodb.contract_templates_table_name
+  source                            = "../../modules/default_stack"
+  contract_templates_table_name     = module.dynamodb.contract_templates_table_name
+  location_service_endpoints        = "${module.api_gateway.api_gateway_endpoint}/locations"
+  notification_service_endpoints    = "${module.api_gateway.api_gateway_endpoint}/notifications"
+  ride_matching_service_endpoints   = "${module.api_gateway.api_gateway_endpoint}/rides"
+  trip_management_service_endpoints = "${module.api_gateway.api_gateway_endpoint}/trips"
 }
 
 module "api_gateway" {
@@ -32,8 +36,8 @@ module "api_gateway" {
 }
 
 data "http" "api_gateway_get_stacks" {
-  depends_on = [ module.api_gateway, module.lambda, module.dynamodb ]
-  url = "${module.api_gateway.api_gateway_endpoint}/stacks"
+  depends_on = [module.api_gateway, module.lambda, module.dynamodb]
+  url        = "${module.api_gateway.api_gateway_endpoint}/stacks"
 }
 data "http" "api_gateway_update_location" {
   url    = "${module.api_gateway.api_gateway_endpoint}/locations"
