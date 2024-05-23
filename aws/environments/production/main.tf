@@ -36,6 +36,9 @@ module "api_gateway" {
   source                            = "../../modules/api_gateway"
   update_location_lambda_arn        = module.lambda.update_location_lambda_arn
   lambda_get_contract_templates_arn = module.lambda.get_contract_templates_lambda_arn
+  notification_lambda_arn           = module.lambda.notification_server_lambda_arn
+  ride_matching_lambda_arn          = module.lambda.ride_matching_service_lambda_arn
+  trip_management_lambda_arn        = module.lambda.trip_management_service_lambda_arn
   dispatch_lambda_arn               = module.lambda.dispatch_lambda_arn
   api_gateway_name                  = "api_gateway_${var.environment}"
 }
