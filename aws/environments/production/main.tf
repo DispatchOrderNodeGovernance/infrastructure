@@ -15,6 +15,7 @@ module "lambda" {
   source                                 = "../../modules/lambda"
   environment                            = var.environment
   dynamodb_table_contract_templates_arn  = module.dynamodb.contract_templates_table_arn
+  dispatch_endpoint                   = module.api_gateway.api_gateway_endpoint
   dynamodb_table_contract_templates_name = module.dynamodb.contract_templates_table_name
 }
 

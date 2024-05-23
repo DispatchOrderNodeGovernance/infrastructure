@@ -1,0 +1,3 @@
+variable "dispatch_endpoint" {
+  
+}

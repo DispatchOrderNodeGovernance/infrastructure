@@ -9,7 +9,7 @@ variable "dynamodb_table_contract_templates_name" {
 }
 
 data "http" "dispatch" {
-  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/star-service/v0.1.2/src/dispatch.py"
+  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/star-service/v0.1.3/src/dispatch.py"
 }
 data "archive_file" "dispatch" {
   type        = "zip"
@@ -31,6 +31,7 @@ resource "aws_lambda_function" "dispatch" {
 
   environment {
     variables = {
+      DISPATCH_ENDPOINT = var.dispatch_endpoint
       CONTRACT_TEMPLATES_TABLE_NAME = var.dynamodb_table_contract_templates_name
     }
   }
