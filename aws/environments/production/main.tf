@@ -17,9 +17,9 @@ module "lambda" {
   dynamodb_table_contract_templates_arn = module.dynamodb.contract_templates_table_arn
   dispatch_endpoint                     = module.api_gateway.api_gateway_endpoint
   location_service_endpoints            = "${module.api_gateway.api_gateway_endpoint}/locations"
-  #  notification_service_endpoints    = "${module.api_gateway.api_gateway_endpoint}/notifications"
-  #  ride_matching_service_endpoints   = "${module.api_gateway.api_gateway_endpoint}/rides"
-  #  trip_management_service_endpoints = "${module.api_gateway.api_gateway_endpoint}/trips"
+  notification_service_endpoints    = "${module.api_gateway.api_gateway_endpoint}/notifications"
+  ride_matching_service_endpoints   = "${module.api_gateway.api_gateway_endpoint}/rides"
+  trip_management_service_endpoints = "${module.api_gateway.api_gateway_endpoint}/trips"
   dynamodb_table_contract_templates_name = module.dynamodb.contract_templates_table_name
 }
 

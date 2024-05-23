@@ -73,7 +73,8 @@ resource "aws_apigatewayv2_stage" "api_gateway" {
   auto_deploy = true
 
   default_route_settings {
-    throttling_burst_limit = 1
-    throttling_rate_limit  = 1
+    throttling_burst_limit = 1 # Maximum number of requests that are allowed in a burst, burst is the maximum number of requests that API Gateway allows to pass through at once
+    throttling_rate_limit  = 2
+    # Maximum number of requests that are allowed per second (maximum requests a month is 60 * 60 * 24 * 30 * 0.05 = 518400)
   }
 }
