@@ -19,6 +19,13 @@ resource "aws_apigatewayv2_integration" "api_gateway_dispatch" {
   integration_uri        = var.dispatch_lambda_arn
   payload_format_version = "2.0"
 }
+resource "aws_lambda_permission" "api_gateway_dispatch" {
+  statement_id  = "AllowExecutionDispatch"
+  action        = "lambda:InvokeFunction"
+  function_name = var.dispatch_lambda_arn
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.api_gateway.execution_arn}/${aws_apigatewayv2_stage.api_gateway.name}/POST/dispatch"
+}
 resource "aws_apigatewayv2_route" "api_gateway_update_location" {
   api_id    = aws_apigatewayv2_api.api_gateway.id
   route_key = "POST /locations"
@@ -31,6 +38,15 @@ resource "aws_apigatewayv2_integration" "api_gateway_update_location" {
   integration_uri        = var.update_location_lambda_arn
   payload_format_version = "2.0"
 }
+
+resource "aws_lambda_permission" "api_gateway_update_location" {
+  statement_id  = "AllowExecutionUpdateLocation"
+  action        = "lambda:InvokeFunction"
+  function_name = var.update_location_lambda_arn
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.api_gateway.execution_arn}/${aws_apigatewayv2_stage.api_gateway.name}/POST/locations"
+}
+
 resource "aws_apigatewayv2_route" "api_gateway_get_stacks" {
   api_id    = aws_apigatewayv2_api.api_gateway.id
   route_key = "GET /stacks"
@@ -43,6 +59,14 @@ resource "aws_apigatewayv2_integration" "api_gateway_get_stacks" {
   integration_uri        = var.lambda_get_contract_templates_arn
   payload_format_version = "2.0"
 }
+resource "aws_lambda_permission" "api_gateway_get_stacks" {
+  statement_id  = "AllowExecutionGetStacks"
+  action        = "lambda:InvokeFunction"
+  function_name = var.lambda_get_contract_templates_arn
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.api_gateway.execution_arn}/${aws_apigatewayv2_stage.api_gateway.name}/GET/stacks"
+}
+
 resource "aws_apigatewayv2_stage" "api_gateway" {
   api_id      = aws_apigatewayv2_api.api_gateway.id
   name        = "production_stage"
@@ -52,24 +76,4 @@ resource "aws_apigatewayv2_stage" "api_gateway" {
     throttling_burst_limit = 1
     throttling_rate_limit  = 1
   }
-}
-
-/* Invoke permissions
-The resource policy of the Lambda function determines if API Gateway can invoke it. You can run the AWS CLI command snippet below to give API Gateway permission to invoke your AWS Lambda function.
- */
-
-resource "aws_lambda_permission" "api_gateway_get_stacks" {
-  statement_id  = "AllowExecutionGetStacks"
-  action        = "lambda:InvokeFunction"
-  function_name = var.lambda_get_contract_templates_arn
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.api_gateway.execution_arn}/${aws_apigatewayv2_stage.api_gateway.name}/GET/stacks"
-}
-
-resource "aws_lambda_permission" "api_gateway_update_location" {
-  statement_id  = "AllowExecutionUpdateLocation"
-  action        = "lambda:InvokeFunction"
-  function_name = var.update_location_lambda_arn
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.api_gateway.execution_arn}/${aws_apigatewayv2_stage.api_gateway.name}/POST/locations"
 }

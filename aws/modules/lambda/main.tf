@@ -15,7 +15,7 @@ variable "dynamodb_table_contract_templates_name" {
 # https://raw.githubusercontent.com/DispatchOrderNodeGovernance/star-service/v0.1.0/src/dispatch.py
 
 data "http" "dispatch" {
-  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/star-service/v0.1.0/src/dispatch.py"
+  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/star-service/v0.1.1/src/dispatch.py"
 }
 data "archive_file" "dispatch" {
   type        = "zip"
