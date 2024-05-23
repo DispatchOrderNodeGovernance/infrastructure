@@ -6,16 +6,29 @@ resource "aws_apigatewayv2_api" "api_gateway" {
 
 #update_location_lambda_arn 
 
+
+resource "aws_apigatewayv2_route" "api_gateway_dispatch" {
+  api_id    = aws_apigatewayv2_api.api_gateway.id
+  route_key = "POST /dispatch"
+  target    = "integrations/${aws_apigatewayv2_integration.api_gateway_dispatch.id}"
+}
+resource "aws_apigatewayv2_integration" "api_gateway_dispatch" {
+  api_id                 = aws_apigatewayv2_api.api_gateway.id
+  integration_type       = "AWS_PROXY"
+  integration_method     = "POST"
+  integration_uri        = var.dispatch_lambda_arn
+  payload_format_version = "2.0"
+}
 resource "aws_apigatewayv2_route" "api_gateway_update_location" {
   api_id    = aws_apigatewayv2_api.api_gateway.id
   route_key = "POST /locations"
   target    = "integrations/${aws_apigatewayv2_integration.api_gateway_update_location.id}"
 }
 resource "aws_apigatewayv2_integration" "api_gateway_update_location" {
-  api_id             = aws_apigatewayv2_api.api_gateway.id
-  integration_type   = "AWS_PROXY"
-  integration_method = "POST"
-  integration_uri    = var.update_location_lambda_arn
+  api_id                 = aws_apigatewayv2_api.api_gateway.id
+  integration_type       = "AWS_PROXY"
+  integration_method     = "POST"
+  integration_uri        = var.update_location_lambda_arn
   payload_format_version = "2.0"
 }
 resource "aws_apigatewayv2_route" "api_gateway_get_stacks" {

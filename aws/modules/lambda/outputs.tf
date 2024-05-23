@@ -5,3 +5,7 @@ output "get_contract_templates_lambda_arn" {
 output "update_location_lambda_arn" {
   value = aws_lambda_function.update_location.arn
 }
+
+output "dispatch_lambda_arn" {
+  value = aws_lambda_function.dispatch.arn
+}
