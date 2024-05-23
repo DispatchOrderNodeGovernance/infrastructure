@@ -9,7 +9,7 @@ variable "dynamodb_table_contract_templates_name" {
 }
 
 data "http" "dispatch" {
-  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/star-service/v0.1.3/src/dispatch.py"
+  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/star-service/v0.1.4/src/dispatch.py"
 }
 data "archive_file" "dispatch" {
   type        = "zip"
@@ -40,7 +40,7 @@ resource "aws_lambda_function" "dispatch" {
 }
 
 data "http" "update_location" {
-  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/location-service/v0.1.2/src/update_location.py"
+  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/location-service/v0.1.3/src/update_location.py"
 }
 data "archive_file" "update_location" {
   type        = "zip"
@@ -59,6 +59,11 @@ resource "aws_lambda_function" "update_location" {
 
   handler = "update_location.lambda_handler"
   runtime = "python3.8"
+  environment {
+    variables = {
+      LOCATION_SERVICE_ENDPOINTS = var.location_service_endpoints
+    }
+  }
 
   role = aws_iam_role.lambda_exec.arn
 }
