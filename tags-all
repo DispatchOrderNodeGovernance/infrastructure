@@ -12,5 +12,5 @@ REPOS="location-service ride-matching-service trip-management-service notificati
 
 for REPO in $REPOS; do
     echo "Processing $REPO"
-    (cd $REPO && git tag $TAG && git push --tags)
+    (cd $REPO && git checkout main && git pull && git tag $TAG && git push origin $TAG)
 done

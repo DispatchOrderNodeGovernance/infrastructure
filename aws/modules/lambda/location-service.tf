@@ -9,7 +9,7 @@ data "archive_file" "update_location" {
 }
 resource "aws_lambda_function" "update_location" {
   architectures    = ["arm64"]
-  function_name    = "update_location_${var.environment}"
+  function_name    = "update_location_${var.environment}_${local.service_version_dash}"
   filename         = data.archive_file.update_location.output_path
   source_code_hash = data.archive_file.update_location.output_base64sha256
 

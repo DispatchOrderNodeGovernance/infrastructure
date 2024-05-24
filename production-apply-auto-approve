@@ -1,5 +1,12 @@
 #!/bin/bash
 
+set -x
+args=("$@")
+version=${args[0]}
+./tags-all $version
+sleep 6
+
+set -xeo pipefail
 terraform -chdir=./aws/environments/production apply --auto-approve
 terraform -chdir=./aws/environments/production apply -target=module.lambda.local_file.dispatch --auto-approve
 

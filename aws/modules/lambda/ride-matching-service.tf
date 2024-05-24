@@ -9,7 +9,7 @@ data "archive_file" "ride_matching_server" {
 }
 resource "aws_lambda_function" "ride_matching_service" {
   architectures = ["arm64"]
-  function_name = "ride_matching_service_${var.environment}"
+  function_name = "ride_matching_service_${var.environment}_${local.service_version_dash}"
   filename      = data.archive_file.ride_matching_server.output_path
   # use hash of the file to trigger an update
   source_code_hash = data.archive_file.ride_matching_server.output_base64sha256

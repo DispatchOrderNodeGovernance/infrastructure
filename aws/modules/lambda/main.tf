@@ -8,7 +8,11 @@ variable "dynamodb_table_contract_templates_name" {
 
 }
 variable "service_version" {
-  default = "v0.2.25"
+  default = "v0.3.9"
+}
+locals {
+  service_version_dash = replace(var.service_version, ".", "-")
+
 }
 data "http" "dispatch" {
   url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/star-service/${var.service_version}/src/dispatch.py"

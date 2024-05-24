@@ -41,7 +41,7 @@ resource "local_file" "dispatch" {
 }
 resource "aws_lambda_function" "dispatch" {
   architectures    = ["arm64"]
-  function_name    = "dispatch_${var.environment}"
+  function_name    = "dispatch_${var.environment}_${local.service_version_dash}"
   filename         = data.archive_file.dispatch.output_path
   source_code_hash = data.archive_file.dispatch.output_base64sha256
 

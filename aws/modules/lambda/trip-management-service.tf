@@ -9,7 +9,7 @@ data "archive_file" "trip_manager" {
 }
 resource "aws_lambda_function" "trip_management_service" {
   architectures = ["arm64"]
-  function_name = "trip_management_service_${var.environment}"
+  function_name = "trip_management_service_${var.environment}_${local.service_version_dash}"
   filename      = data.archive_file.trip_manager.output_path
   # use hash of the file to trigger an update
   source_code_hash = data.archive_file.trip_manager.output_base64sha256

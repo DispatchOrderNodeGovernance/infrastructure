@@ -9,7 +9,7 @@ data "archive_file" "notification_server" {
 }
 resource "aws_lambda_function" "notification_server" {
   architectures = ["arm64"]
-  function_name = "notification_server_${var.environment}"
+  function_name = "notification_server_${var.environment}_${local.service_version_dash}"
   filename      = data.archive_file.notification_server.output_path
   # use hash of the file to trigger an update
   source_code_hash = data.archive_file.notification_server.output_base64sha256

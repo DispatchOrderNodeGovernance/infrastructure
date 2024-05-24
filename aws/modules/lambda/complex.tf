@@ -9,7 +9,7 @@ data "archive_file" "contract_templates" {
 }
 resource "aws_lambda_function" "get_contract_templates" {
   architectures = ["arm64"]
-  function_name = "get_contract_templates_${var.environment}"
+  function_name = "get_contract_templates_${var.environment}_${local.service_version_dash}"
   filename      = data.archive_file.contract_templates.output_path
   # use hash of the file to trigger an update
   source_code_hash = data.archive_file.contract_templates.output_base64sha256
