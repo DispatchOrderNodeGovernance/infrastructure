@@ -1,3 +1,5 @@
 #!/bin/bash
 
 terraform -chdir=./aws/environments/production apply --auto-approve
+terraform -chdir=./aws/environments/production apply -target=module.lambda.local_file.dispatch --auto-approve
+
