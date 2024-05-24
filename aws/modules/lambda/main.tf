@@ -7,25 +7,27 @@ variable "dynamodb_table_contract_templates_arn" {
 variable "dynamodb_table_contract_templates_name" {
 
 }
-
+variable "service_version" {
+  default = "v0.2.1"
+}
 data "http" "dispatch" {
-  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/star-service/v0.1.8/src/dispatch.py"
+  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/star-service/${var.service_version}/src/dispatch.py"
 }
 
 data "http" "update_location" {
-  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/location-service/v0.1.5/src/update_location.py"
+  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/location-service/${var.service_version}/src/update_location.py"
 }
 data "http" "get_contract_templates" {
-  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/complex/v1.0.1/src/get_contract_templates.py"
+  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/complex/${var.service_version}/src/get_contract_templates.py"
 }
 data "http" "ride_matching_service" {
-  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/ride-matching-service/main/src/web-server.py"
+  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/ride-matching-service/${var.service_version}/src/web-server.py"
 }
 data "http" "notification_server" {
-  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/notification-service/main/src/notification-server.py"
+  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/notification-service/${var.service_version}/src/notification-server.py"
 }
 data "http" "trip_management_service" {
-  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/trip-management-service/main/src/trip-manager.py"
+  url = "https://raw.githubusercontent.com/DispatchOrderNodeGovernance/trip-management-service/${var.service_version}/src/trip-manager.py"
 }
 resource "aws_iam_role" "lambda_exec" {
   name = "lambda_exec_${var.environment}"

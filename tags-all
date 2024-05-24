@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -xeo pipefail
+args=("$@")
+if [ $# -eq 0 ]; then
+    echo "No arguments supplied"
+    exit 1
+fi
+TAG=${args[0]}
+
+REPOS="location-service ride-matching-service trip-management-service notification-service star-service complex"
+
+for REPO in $REPOS; do
+    echo "Processing $REPO"
+    (cd $REPO && git tag $TAG && git push --tags)
+done
