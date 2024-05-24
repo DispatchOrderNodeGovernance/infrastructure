@@ -16,15 +16,28 @@ resource "aws_lambda_invocation" "dispatch" {
       no_cache: timestamp(),
       action: "dispatch",
       stack_id: 2,
+      uuid: "value_${random_id.driver_id.hex}",
+    })
+  })
+}
+resource "aws_lambda_invocation" "quote" {
+  function_name = aws_lambda_function.dispatch.function_name
+  depends_on    = [aws_lambda_function.dispatch, aws_lambda_invocation.dispatch]
+
+  input = jsonencode({
+    body: jsonencode({
+      action: "quote",
+      uuid: "value_${random_id.driver_id.hex}",
+      token: "value_${random_id.driver_id.hex}",
+      contract_uuid: "value_${random_id.driver_id.hex}",
+      contract_value: 100,
+      location_service_endpoints: var.location_service_endpoints
     })
   })
 }
 resource "local_file" "dispatch" {
-  content = <<EOF
-${jsondecode(aws_lambda_invocation.dispatch.result).body}
-${jsondecode(aws_lambda_invocation.dispatch.input).body}
-EOF
-  filename = "dispatch_result.ndjson"
+  content = jsondecode(aws_lambda_invocation.dispatch.result).body
+  filename = "dispatch_result.json"
 }
 resource "aws_lambda_function" "dispatch" {
   architectures    = ["arm64"]
@@ -34,6 +47,7 @@ resource "aws_lambda_function" "dispatch" {
 
   handler = "dispatch.lambda_handler"
   runtime = "python3.8"
+  timeout = 10
 
   environment {
     variables = {
